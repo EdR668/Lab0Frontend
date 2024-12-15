@@ -1,11 +1,34 @@
 "use client";
 
-import dataProviderSimpleRest from "@refinedev/simple-rest";
+import { DataProvider } from "@refinedev/core";
+import simpleRestDataProvider from "@refinedev/simple-rest";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const API_URL = "https://lab0-761c217307e5.herokuapp.com";
 
-if (!API_URL) {
-  throw new Error("La variable de entorno NEXT_PUBLIC_API_URL no está definida.");
-}
+// Proveedor de datos personalizado
+export const customDataProvider: DataProvider = {
+  ...simpleRestDataProvider(API_URL),
+  update: async ({ resource, id, variables, meta }) => {
+    const url = `${API_URL}/${resource}/${id}`;
+    const options: RequestInit = {
+      method: "PUT", // Cambia de PATCH a PUT
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(variables),
+    };
 
-export const dataProvider = dataProviderSimpleRest(API_URL);
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`Error updating ${resource}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return {
+      data,
+    };
+  },
+};
+
+export default customDataProvider;

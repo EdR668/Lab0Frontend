@@ -12,34 +12,21 @@ import {
 } from "@refinedev/mui";
 import React from "react";
 
-export default function PersonaList() {
+export default function AlcaldiaList() {
   const { dataGridProps } = useDataGrid({
     syncWithLocation: true,
   });
 
-  const { data: viviendasData, isLoading: viviendasIsLoading } = useMany({
-    resource: "viviendas",
-    ids:
-      dataGridProps?.rows
-        ?.map((item: any) => item?.vivienda?.id)
-        .filter(Boolean) ?? [],
-    queryOptions: {
-      enabled: !!dataGridProps?.rows,
-    },
-  });
-
-
-  const { data: MunicipiosData, isLoading: MunicipiosIsLoading } = useMany({
+  const { data: municipiosData, isLoading: municipiosIsLoading } = useMany({
     resource: "municipios",
     ids:
       dataGridProps?.rows
-        ?.map((item: any) => item?.munucipio?.id)
+        ?.map((item: any) => item?.municipio_id)
         .filter(Boolean) ?? [],
     queryOptions: {
       enabled: !!dataGridProps?.rows,
     },
   });
-
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
@@ -50,54 +37,52 @@ export default function PersonaList() {
         minWidth: 50,
       },
       {
-        field: "nombre",
+        field: "direccion",
         flex: 1,
-        headerName: "Nombre",
-        minWidth: 150,
-      },
-      {
-        field: "edad",
-        flex: 1,
-        headerName: "Edad",
-        type: "number",
-        minWidth: 50,
-      },
-      {
-        field: "sexo",
-        flex: 1,
-        headerName: "Sexo",
-        minWidth: 50,
-      },
-      {
-        field: "telefono",
-        flex: 1,
-        headerName: "Telefono",
-        type: "number",
+        headerName: "Dirección",
         minWidth: 200,
       },
       {
-        field: "vivienda_id",
+        field: "email",
         flex: 1,
-        headerName: "Vivienda",
-        minWidth: 250,
+        headerName: "Email",
+        minWidth: 200,
+      },
+      {
+        field: "presupuesto_anual",
+        flex: 1,
+        headerName: "Presupuesto Anual",
+        type: "number",
+        minWidth: 200,
+        valueFormatter: ({ value }) =>
+          new Intl.NumberFormat("es-CO", {
+            style: "currency",
+            currency: "COP",
+          }).format(value),
+      },
+      {
+        field: "activo",
+        flex: 1,
+        headerName: "Activo",
+        minWidth: 100,
+        renderCell: ({ value }) => (value ? "Sí" : "No"),
+      },
+      {
+        field: "municipio_id",
+        flex: 1,
+        headerName: "Municipio",
+        minWidth: 200,
         valueGetter: ({ row }) => {
-          const value = row?.vivienda_id;
+          const value = row?.municipio_id;
           return value;
         },
         renderCell: function render({ value }) {
-          if (viviendasIsLoading || MunicipiosIsLoading) {
+          if (municipiosIsLoading) {
             return <>Loading...</>;
           }
-      
-          const vivienda = viviendasData?.data?.find((item) => item.id === value);
 
-          const municipio = vivienda
-            ? MunicipiosData?.data?.find((item) => item.id === vivienda.municipio_id)
-            : null;
-        
-          return vivienda
-            ? `${vivienda.direccion}, ${municipio?.nombre || "Sin municipio"}`
-            : "No registrado";
+          const municipio = municipiosData?.data?.find((item) => item.id === value);
+          return municipio ? municipio.nombre : "No registrado";
         },
       },
       {
@@ -136,7 +121,7 @@ export default function PersonaList() {
         minWidth: 80,
       },
     ],
-    [viviendasData]
+    [municipiosData]
   );
 
   return (

@@ -58,6 +58,28 @@ export default function PersonaCreate() {
           name="edad"
         />
 
+        {/* Sexo */}
+        <Controller
+          control={control}
+          name="sexo"
+          
+          render={({ field }) => (
+            <TextField
+              {...field}
+              margin="normal"
+              fullWidth
+              select
+              label="Sexo"
+              variant="outlined"
+              error={!!(errors as any)?.sexo}
+              helperText={(errors as any)?.sexo?.message}
+            >
+              <MenuItem value="Hombre">Hombre</MenuItem>
+              <MenuItem value="Mujer">Mujer</MenuItem>
+            </TextField>
+          )}
+        />
+
         {/* Teléfono */}
         <TextField
           {...register("telefono", {
@@ -87,19 +109,23 @@ export default function PersonaCreate() {
                 field.onChange(value?.id);
               }}
               getOptionLabel={(item) => {
-                const vivienda = viviendaAutocompleteProps?.options?.find((p) => {
-                  const itemId =
-                    typeof item === "object"
-                      ? item?.id?.toString()
-                      : item?.toString();
-                  const pId = p?.id?.toString();
-                  return itemId === pId;
-                });
+                const vivienda = viviendaAutocompleteProps?.options?.find(
+                  (p) => {
+                    const itemId =
+                      typeof item === "object"
+                        ? item?.id?.toString()
+                        : item?.toString();
+                    const pId = p?.id?.toString();
+                    return itemId === pId;
+                  }
+                );
                 const municipio = municipiosAutocompleteProps?.options?.find(
                   (m) => m.id === vivienda?.municipio_id
                 );
                 return vivienda
-                  ? `${vivienda.id} - ${vivienda.direccion}, ${municipio?.nombre || "Sin municipio"}`
+                  ? `${vivienda.id} - ${vivienda.direccion}, ${
+                      municipio?.nombre || "Sin municipio"
+                    }`
                   : "";
               }}
               isOptionEqualToValue={(option, value) => {
@@ -124,7 +150,6 @@ export default function PersonaCreate() {
             />
           )}
         />
-
       </Box>
     </Create>
   );

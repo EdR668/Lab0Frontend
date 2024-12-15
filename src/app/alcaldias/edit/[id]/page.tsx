@@ -1,30 +1,24 @@
 "use client";
 
-import { Autocomplete, Box, Select, TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import { Autocomplete, Box, Switch, TextField, FormControlLabel } from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 
-export default function PersonaEdit() {
+export default function AlcaldiaEdit() {
   const {
     saveButtonProps,
     refineCore: { queryResult, formLoading },
-    handleSubmit,
     register,
     control,
     formState: { errors },
   } = useForm({});
 
-  const personaData = queryResult?.data?.data;
-
-  const { autocompleteProps: viviendaAutocompleteProps } = useAutocomplete({
-    resource: "viviendas",
-    defaultValue: personaData?.vivienda_id,
-  });
+  const alcaldiaData = queryResult?.data?.data;
 
   const { autocompleteProps: municipiosAutocompleteProps } = useAutocomplete({
     resource: "municipios",
+    defaultValue: alcaldiaData?.municipio_id,
   });
 
   return (
@@ -34,106 +28,98 @@ export default function PersonaEdit() {
         sx={{ display: "flex", flexDirection: "column" }}
         autoComplete="off"
       >
-        {/* Nombre */}
+        {/* Dirección */}
         <TextField
-          {...register("nombre", {
+          {...register("direccion", {
             required: "Este campo es obligatorio",
           })}
-          error={!!(errors as any)?.nombre}
-          helperText={(errors as any)?.nombre?.message}
+          error={!!(errors as any)?.direccion}
+          helperText={(errors as any)?.direccion?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="text"
-          label="Nombre"
-          name="nombre"
+          label="Dirección"
+          name="direccion"
         />
 
-        {/* Edad */}
+        {/* Email */}
         <TextField
-          {...register("edad", {
+          {...register("email", {
+            required: "Este campo es obligatorio",
+            pattern: {
+              value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: "Ingrese un email válido",
+            },
+          })}
+          error={!!(errors as any)?.email}
+          helperText={(errors as any)?.email?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="email"
+          label="Email"
+          name="email"
+        />
+
+        {/* Presupuesto Anual */}
+        <TextField
+          {...register("presupuesto_anual", {
             required: "Este campo es obligatorio",
           })}
-          error={!!(errors as any)?.edad}
-          helperText={(errors as any)?.edad?.message}
+          error={!!(errors as any)?.presupuesto_anual}
+          helperText={(errors as any)?.presupuesto_anual?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="number"
-          label="Edad"
-          name="edad"
+          label="Presupuesto Anual"
+          name="presupuesto_anual"
         />
 
-        {/* Sexo */}
+        {/* Activo */}
+        <FormControlLabel
+          control={
+            <Controller
+              name="activo"
+              control={control}
+              defaultValue={alcaldiaData?.activo || false}
+              render={({ field }) => (
+                <Switch
+                  {...field}
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                />
+              )}
+            />
+          }
+          label="Activo"
+          sx={{ marginTop: "16px" }}
+        />
+
+        {/* Municipio */}
         <Controller
           control={control}
-          name="sexo"
-          defaultValue={personaData?.sexo || ""}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              margin="normal"
-              required
-              fullWidth
-              select
-              label="Sexo"
-              variant="outlined"
-              error={!!(errors as any)?.sexo}
-              helperText={(errors as any)?.sexo?.message}
-            >
-              <MenuItem value="Hombre">Hombre</MenuItem>
-              <MenuItem value="Mujer">Mujer</MenuItem>
-            </TextField>
-          )}
-        />
-
-        {/* Teléfono */}
-        <TextField
-          {...register("telefono", {
-            required: "Este campo es obligatorio",
-          })}
-          error={!!(errors as any)?.telefono}
-          helperText={(errors as any)?.telefono?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Teléfono"
-          name="telefono"
-        />
-
-        {/* Vivienda */}
-        <Controller
-          control={control}
-          name="vivienda_id"
+          name="municipio_id"
           rules={{ required: "Este campo es obligatorio" }}
           defaultValue={null}
           render={({ field }) => (
             <Autocomplete
-              {...viviendaAutocompleteProps}
+              {...municipiosAutocompleteProps}
               {...field}
               onChange={(_, value) => {
                 field.onChange(value?.id);
               }}
               getOptionLabel={(item) => {
-                const vivienda = viviendaAutocompleteProps?.options?.find(
-                  (p) => {
-                    const itemId =
-                      typeof item === "object"
-                        ? item?.id?.toString()
-                        : item?.toString();
-                    const pId = p?.id?.toString();
-                    return itemId === pId;
-                  }
-                );
-                const municipio = municipiosAutocompleteProps?.options?.find(
-                  (m) => m.id === vivienda?.municipio_id
-                );
-                return vivienda
-                  ? `${vivienda.id} - ${vivienda.direccion}, ${
-                      municipio?.nombre || "Sin municipio"
-                    }`
-                  : "";
+                const municipio = municipiosAutocompleteProps?.options?.find((p) => {
+                  const itemId =
+                    typeof item === "object"
+                      ? item?.id?.toString()
+                      : item?.toString();
+                  const pId = p?.id?.toString();
+                  return itemId === pId;
+                });
+                return municipio ? `${municipio.id} - ${municipio.nombre}` : "";
               }}
               isOptionEqualToValue={(option, value) => {
                 const optionId = option?.id?.toString();
@@ -146,11 +132,11 @@ export default function PersonaEdit() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Vivienda"
+                  label="Municipio"
                   margin="normal"
                   variant="outlined"
-                  error={!!(errors as any)?.vivienda_id}
-                  helperText={(errors as any)?.vivienda_id?.message}
+                  error={!!(errors as any)?.municipio_id}
+                  helperText={(errors as any)?.municipio_id?.message}
                   required
                 />
               )}

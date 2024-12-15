@@ -8,7 +8,7 @@ import { cookies } from "next/headers";
 import React, { Suspense } from "react";
 
 import { ColorModeContextProvider } from "@contexts/color-mode";
-import { dataProvider } from "@providers/data-provider";
+import customDataProvider from "../providers/data-provider/index";
 import { SvgIcon, SvgIconProps } from "@mui/material";
 
 export const metadata: Metadata = {
@@ -54,7 +54,7 @@ export default function RootLayout({
                 <DevtoolsProvider>
                   <Refine
                     routerProvider={routerProvider}
-                    dataProvider={dataProvider}
+                    dataProvider={customDataProvider}
                     notificationProvider={notificationProvider}
                 
                     resources={[
@@ -104,6 +104,26 @@ export default function RootLayout({
                         create: "/municipios/create",
                         edit: "/municipios/edit/:id",
                         show: "/municipios/show/:id",
+                        meta: {
+                          canDelete: true,
+                        },
+                      },
+                      {
+                        name: "alcaldias",
+                        list: "/alcaldias",
+                        create: "/alcaldias/create",
+                        edit: "/alcaldias/edit/:id",
+                        show: "/alcaldias/show/:id",
+                        meta: {
+                          canDelete: true,
+                        },
+                      },
+                      {
+                        name: "empleados",
+                        list: "/empleados",
+                        create: "/empleados/create",
+                        edit: "/empleados/edit/:id",
+                        show: "/empleados/show/:id",
                         meta: {
                           canDelete: true,
                         },

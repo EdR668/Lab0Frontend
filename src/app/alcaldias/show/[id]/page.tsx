@@ -8,25 +8,16 @@ import {
   TextFieldComponent as TextField,
 } from "@refinedev/mui";
 
-export default function PersonaShow() {
+export default function AlcaldiaShow() {
   const { queryResult } = useShow({});
 
   const { data, isLoading } = queryResult;
 
   const record = data?.data;
 
-  const { data: viviendaData, isLoading: viviendaIsLoading } = useOne({
-    resource: "viviendas",
-    id: record?.vivienda_id || "",
-    queryOptions: {
-      enabled: !!record,
-    },
-  });
-
-  console.log(viviendaData);
   const { data: municipioData, isLoading: municipioIsLoading } = useOne({
     resource: "municipios",
-    id: viviendaData?.data?.municipio_id || "",
+    id: record?.municipio_id || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -41,40 +32,38 @@ export default function PersonaShow() {
         </Typography>
         <TextField value={record?.id} />
 
-        {/* Nombre */}
+        {/* Dirección */}
         <Typography variant="body1" fontWeight="bold">
-          {"Nombre"}
+          {"Dirección"}
         </Typography>
-        <TextField value={record?.nombre} />
+        <TextField value={record?.direccion} />
 
-        {/* Edad */}
+        {/* Email */}
         <Typography variant="body1" fontWeight="bold">
-          {"Edad"}
+          {"Email"}
         </Typography>
-        <TextField value={record?.edad} />
-        {/* Sexo */}
-        <Typography variant="body1" fontWeight="bold">
-          {"Sexo"}
-        </Typography>
-        <TextField value={record?.sexo} />
+        <TextField value={record?.email} />
 
-        {/* Teléfono */}
+        {/* Presupuesto Anual */}
         <Typography variant="body1" fontWeight="bold">
-          {"Teléfono"}
+          {"Presupuesto Anual"}
         </Typography>
-        <TextField value={record?.telefono} />
+        <TextField value={`$${record?.presupuesto_anual?.toLocaleString()}`} />
 
-        {/* Vivienda */}
+        {/* Activo */}
         <Typography variant="body1" fontWeight="bold">
-          {"Vivienda"}
+          {"Activo"}
         </Typography>
-        {viviendaIsLoading ? (
+        <TextField value={record?.activo ? "Sí" : "No"} />
+
+        {/* Municipio */}
+        <Typography variant="body1" fontWeight="bold">
+          {"Municipio"}
+        </Typography>
+        {municipioIsLoading ? (
           <>Loading...</>
         ) : (
-          <>
-            {`${viviendaData?.data?.direccion}, ${municipioData?.data?.nombre}` ||
-              "No registrado"}
-          </>
+          <>{municipioData?.data?.nombre || "No registrado"}</>
         )}
 
         {/* Fecha de Creación */}
