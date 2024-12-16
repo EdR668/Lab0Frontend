@@ -103,7 +103,7 @@ export default function AlcaldiaCreate() {
           type="text"
           label="Fecha de Inicio"
           name="fecha_inicio"
-          disabled
+       
         />
 
         {/* Fecha de Finalización */}
@@ -115,10 +115,10 @@ export default function AlcaldiaCreate() {
           type="text"
           label="Fecha de Finalización"
           name="fecha_fin"
-          disabled
+     
         />
 
-        
+
         {/* Municipio */}
         <Controller
           control={control}
