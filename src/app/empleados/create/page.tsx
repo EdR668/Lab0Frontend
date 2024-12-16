@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Box, MenuItem, TextField } from "@mui/material";
+import { Autocomplete, Box, FormControlLabel, MenuItem, Switch, TextField } from "@mui/material";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
@@ -188,7 +188,25 @@ export default function EmpleadosCreate() {
             />
           )}
         />
-
+        {/* Activo */}
+        <FormControlLabel
+          control={
+            <Controller
+              name="activo"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <Switch
+                  {...field}
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                />
+              )}
+            />
+          }
+          label="Activo"
+          sx={{ marginTop: "16px" }}
+        />
         {/* Rol */}
         <Controller
           control={control}
