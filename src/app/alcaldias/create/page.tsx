@@ -94,16 +94,16 @@ export default function AlcaldiaCreate() {
           sx={{ marginTop: "16px" }}
         />
 
-        {/* Fecha de Inicio */}
-        <TextField
+       {/* Fecha de Inicio */}
+       <TextField
           {...register("fecha_inicio")}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
-          type="text"
           label="Fecha de Inicio"
           name="fecha_inicio"
-       
+          type="date"
+          required
         />
 
         {/* Fecha de Finalización */}
@@ -112,10 +112,10 @@ export default function AlcaldiaCreate() {
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
-          type="text"
           label="Fecha de Finalización"
           name="fecha_fin"
-     
+          type="date"
+          required
         />
 
 
