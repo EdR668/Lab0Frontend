@@ -6,7 +6,8 @@ import routerProvider from "@refinedev/nextjs-router";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import React, { Suspense } from "react";
-
+import { FaUsers, FaHome, FaCity } from "react-icons/fa"; // FontAwesome
+import { MdBusiness, MdPerson } from "react-icons/md"; // Material Design
 import { ColorModeContextProvider } from "@contexts/color-mode";
 import customDataProvider from "../providers/data-provider/index";
 import { SvgIcon, SvgIconProps } from "@mui/material";
@@ -19,8 +20,6 @@ export const metadata: Metadata = {
   },
 };
 
-
-
 const CustomIcon = () => (
   <SvgIcon>
     <image
@@ -32,7 +31,6 @@ const CustomIcon = () => (
     />
   </SvgIcon>
 );
-
 
 export default function RootLayout({
   children,
@@ -47,7 +45,6 @@ export default function RootLayout({
     <html lang="es">
       <body>
         <Suspense>
-
           <RefineKbarProvider>
             <ColorModeContextProvider defaultMode={defaultMode}>
               <RefineSnackbarProvider>
@@ -56,7 +53,6 @@ export default function RootLayout({
                     routerProvider={routerProvider}
                     dataProvider={customDataProvider}
                     notificationProvider={notificationProvider}
-                
                     resources={[
                       // {
                       //   name: "blog_posts",
@@ -78,6 +74,7 @@ export default function RootLayout({
                       //     canDelete: true,
                       //   },
                       // },
+
                       {
                         name: "personas",
                         list: "/personas",
@@ -86,6 +83,7 @@ export default function RootLayout({
                         show: "/personas/show/:id",
                         meta: {
                           canDelete: true,
+                          icon: <MdPerson />, // Ícono para "personas"
                         },
                       },
                       {
@@ -96,6 +94,7 @@ export default function RootLayout({
                         show: "/viviendas/show/:id",
                         meta: {
                           canDelete: true,
+                          icon: <FaHome />, // Ícono para "viviendas"
                         },
                       },
                       {
@@ -106,6 +105,7 @@ export default function RootLayout({
                         show: "/municipios/show/:id",
                         meta: {
                           canDelete: true,
+                          icon: <FaCity />, // Ícono para "municipios"
                         },
                       },
                       {
@@ -116,6 +116,7 @@ export default function RootLayout({
                         show: "/alcaldias/show/:id",
                         meta: {
                           canDelete: true,
+                          icon: <MdBusiness />, // Ícono para "alcaldias"
                         },
                       },
                       {
@@ -126,6 +127,7 @@ export default function RootLayout({
                         show: "/empleados/show/:id",
                         meta: {
                           canDelete: true,
+                          icon: <FaUsers />, // Ícono para "empleados"
                         },
                       },
                     ]}
@@ -136,7 +138,7 @@ export default function RootLayout({
                       projectId: "qmfdZ5-skRLLz-JjtP04",
                       title: {
                         text: "Limitless",
-                        icon: <CustomIcon/>,
+                        icon: <CustomIcon />,
                       },
                     }}
                   >
