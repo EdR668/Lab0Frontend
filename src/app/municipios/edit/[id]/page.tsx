@@ -37,6 +37,7 @@ export default function MunicipioEdit() {
           type="text"
           label="Nombre"
           name="nombre"
+          required
         />
 
         {/* Área */}
@@ -52,6 +53,7 @@ export default function MunicipioEdit() {
           type="number"
           label="Área (km²)"
           name="area"
+          required
         />
 
         {/* Presupuesto */}
@@ -67,6 +69,7 @@ export default function MunicipioEdit() {
           type="number"
           label="Presupuesto"
           name="presupuesto"
+          required
         />
 
         {/* Fecha de Creación */}

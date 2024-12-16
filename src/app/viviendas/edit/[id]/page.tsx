@@ -43,6 +43,7 @@ export default function ViviendaEdit() {
           type="text"
           label="Dirección"
           name="direccion"
+          required
         />
 
         {/* Capacidad */}
@@ -58,6 +59,7 @@ export default function ViviendaEdit() {
           type="number"
           label="Capacidad"
           name="capacidad"
+          required
         />
 
         {/* Niveles */}
@@ -73,6 +75,7 @@ export default function ViviendaEdit() {
           type="number"
           label="Niveles"
           name="niveles"
+          required
         />
 
         {/* Municipio */}

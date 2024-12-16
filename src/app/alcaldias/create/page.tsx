@@ -94,6 +94,31 @@ export default function AlcaldiaCreate() {
           sx={{ marginTop: "16px" }}
         />
 
+        {/* Fecha de Inicio */}
+        <TextField
+          {...register("fecha_inicio")}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label="Fecha de Inicio"
+          name="fecha_inicio"
+          disabled
+        />
+
+        {/* Fecha de Finalización */}
+        <TextField
+          {...register("fecha_fin")}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label="Fecha de Finalización"
+          name="fecha_fin"
+          disabled
+        />
+
+        
         {/* Municipio */}
         <Controller
           control={control}

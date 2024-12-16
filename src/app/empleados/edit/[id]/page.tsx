@@ -66,6 +66,7 @@ export default function EmpleadosEdit() {
           type="number"
           label="Salario"
           name="salario"
+          required
         />
 
         {/* Tipo de Contrato */}
@@ -104,6 +105,7 @@ export default function EmpleadosEdit() {
           type="number"
           label="Años de Experiencia"
           name="años_experiencia"
+          required
         />
 
         {/* Alcaldía */}
@@ -249,6 +251,7 @@ export default function EmpleadosEdit() {
           label="Fecha ingreso"
           name="fecha_ingreso"
           disabled
+          required
         />
 
         {/* Fecha de Creación */}

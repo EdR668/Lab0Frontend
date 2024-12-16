@@ -47,6 +47,7 @@ export default function PersonaEdit() {
           type="text"
           label="Nombre"
           name="nombre"
+          required
         />
 
         {/* Edad */}
@@ -62,6 +63,7 @@ export default function PersonaEdit() {
           type="number"
           label="Edad"
           name="edad"
+          required
         />
 
         {/* Sexo */}
@@ -100,6 +102,7 @@ export default function PersonaEdit() {
           type="text"
           label="Teléfono"
           name="telefono"
+          required
         />
 
         {/* Vivienda */}

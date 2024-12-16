@@ -1,6 +1,12 @@
 "use client";
 
-import { Autocomplete, Box, Switch, TextField, FormControlLabel } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Switch,
+  TextField,
+  FormControlLabel,
+} from "@mui/material";
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
@@ -41,6 +47,7 @@ export default function AlcaldiaEdit() {
           type="text"
           label="Dirección"
           name="direccion"
+          required
         />
 
         {/* Email */}
@@ -60,6 +67,7 @@ export default function AlcaldiaEdit() {
           type="email"
           label="Email"
           name="email"
+          required
         />
 
         {/* Presupuesto Anual */}
@@ -75,6 +83,7 @@ export default function AlcaldiaEdit() {
           type="number"
           label="Presupuesto Anual"
           name="presupuesto_anual"
+          required
         />
 
         {/* Activo */}
@@ -111,14 +120,16 @@ export default function AlcaldiaEdit() {
                 field.onChange(value?.id);
               }}
               getOptionLabel={(item) => {
-                const municipio = municipiosAutocompleteProps?.options?.find((p) => {
-                  const itemId =
-                    typeof item === "object"
-                      ? item?.id?.toString()
-                      : item?.toString();
-                  const pId = p?.id?.toString();
-                  return itemId === pId;
-                });
+                const municipio = municipiosAutocompleteProps?.options?.find(
+                  (p) => {
+                    const itemId =
+                      typeof item === "object"
+                        ? item?.id?.toString()
+                        : item?.toString();
+                    const pId = p?.id?.toString();
+                    return itemId === pId;
+                  }
+                );
                 return municipio ? `${municipio.id} - ${municipio.nombre}` : "";
               }}
               isOptionEqualToValue={(option, value) => {
@@ -142,6 +153,30 @@ export default function AlcaldiaEdit() {
               )}
             />
           )}
+        />
+
+        {/* Fecha de Inicio */}
+        <TextField
+          {...register("fecha_inicio")}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          label="Fecha de Inicio"
+          name="fecha_inicio"
+          type="date"
+          required
+        />
+
+        {/* Fecha de Finalización */}
+        <TextField
+          {...register("fecha_fin")}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          label="Fecha de Finalización"
+          name="fecha_fin"
+          type="date"
+          required
         />
 
         {/* Fecha de Creación */}
