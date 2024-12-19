@@ -26,7 +26,10 @@ export default function PersonaEdit() {
   const { autocompleteProps: municipiosAutocompleteProps } = useAutocomplete({
     resource: "municipios",
   });
-
+  const { autocompleteProps: padreAutocompleteProps } = useAutocomplete({
+    resource: "personas", // El recurso donde se encuentran los datos de las personas.
+    defaultValue: personaData?.padre_id,
+  });
   return (
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
@@ -160,7 +163,47 @@ export default function PersonaEdit() {
             />
           )}
         />
-
+        {/* Padre */}
+        <Controller
+          control={control}
+          name="padre_id"
+          rules={{ required: "Este campo es obligatorio" }}
+          defaultValue={null}
+          render={({ field }) => (
+            <Autocomplete
+              {...padreAutocompleteProps}
+              {...field}
+              onChange={(_, value) => {
+                field.onChange(value?.id);
+              }}
+              getOptionLabel={(item) => {
+                const padre = padreAutocompleteProps?.options?.find(
+                  (p) => p.id === (typeof item === "object" ? item?.id : item)
+                );
+                return padre ? `${padre.nombre}` : "";
+              }}
+              isOptionEqualToValue={(option, value) => {
+                const optionId = option?.id?.toString();
+                const valueId =
+                  typeof value === "object"
+                    ? value?.id?.toString()
+                    : value?.toString();
+                return value === undefined || optionId === valueId;
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Dependencia económica"
+                  margin="normal"
+                  variant="outlined"
+                  error={!!(errors as any)?.padre_id}
+                  helperText={(errors as any)?.padre_id?.message}
+                  required
+                />
+              )}
+            />
+          )}
+        />
         {/* Fecha de Creación */}
         <TextField
           {...register("created_at")}

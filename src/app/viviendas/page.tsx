@@ -28,7 +28,7 @@ export default function ViviendaList() {
     },
   });
 
-  console.log(municipiosData)
+
 
   const { data: personasData, isLoading: personasIsLoading } = useMany({
     resource: "personas",

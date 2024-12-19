@@ -23,12 +23,19 @@ export default function PersonaShow() {
     },
   });
 
-  console.log(viviendaData);
   const { data: municipioData, isLoading: municipioIsLoading } = useOne({
     resource: "municipios",
     id: viviendaData?.data?.municipio_id || "",
     queryOptions: {
-      enabled: !!record,
+      enabled: !!viviendaData,
+    },
+  });
+
+  const { data: padreData, isLoading: padreIsLoading } = useOne({
+    resource: "personas", // Asumiendo que el recurso es "personas".
+    id: record?.padre_id || "",
+    queryOptions: {
+      enabled: !!record?.padre_id,
     },
   });
 
@@ -52,6 +59,7 @@ export default function PersonaShow() {
           {"Edad"}
         </Typography>
         <TextField value={record?.edad} />
+
         {/* Sexo */}
         <Typography variant="body1" fontWeight="bold">
           {"Sexo"}
@@ -68,12 +76,29 @@ export default function PersonaShow() {
         <Typography variant="body1" fontWeight="bold">
           {"Vivienda"}
         </Typography>
-        {viviendaIsLoading ? (
+        {viviendaIsLoading || municipioIsLoading ? (
           <>Loading...</>
         ) : (
           <>
-            {`${viviendaData?.data?.direccion}, ${municipioData?.data?.nombre}` ||
-              "No registrado"}
+            {viviendaData?.data
+              ? `${viviendaData?.data?.direccion}, ${
+                  municipioData?.data?.nombre || "Sin municipio"
+                }`
+              : "No registrado"}
+          </>
+        )}
+
+        {/* Padre */}
+        <Typography variant="body1" fontWeight="bold">
+          {"Dependencia Económica"}
+        </Typography>
+        {padreIsLoading ? (
+          <>Loading...</>
+        ) : (
+          <>
+            {record?.padre_id === record?.id
+              ? "Independiente"
+              : padreData?.data?.nombre || "No registrado"}
           </>
         )}
 

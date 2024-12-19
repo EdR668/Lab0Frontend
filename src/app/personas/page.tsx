@@ -41,6 +41,16 @@ export default function PersonaList() {
   });
 
 
+  const { data: padresData, isLoading: padresIsLoading } = useMany({
+    resource: "personas", // Asumiendo que el recurso para personas es "personas".
+    ids:
+      dataGridProps?.rows
+        ?.map((item: any) => item?.padre_id)
+        .filter(Boolean) ?? [],
+    queryOptions: {
+      enabled: !!dataGridProps?.rows,
+    },
+  });
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
@@ -66,7 +76,7 @@ export default function PersonaList() {
         field: "sexo",
         flex: 1,
         headerName: "Sexo",
-        minWidth: 50,
+        minWidth: 100,
       },
       {
         field: "telefono",
@@ -98,6 +108,26 @@ export default function PersonaList() {
           return vivienda
             ? `${vivienda.direccion}, ${municipio?.nombre || "Sin municipio"}`
             : "No registrado";
+        },
+      },
+      {
+        field: "padre_id",
+        flex: 1,
+        headerName: "Dependencia económica",
+        minWidth: 250,
+        valueGetter: ({ row }) => row?.padre_id,
+        renderCell: function render({ value, row }) {
+          if (padresIsLoading) {
+            return <>Loading...</>;
+          }
+
+          if (value === row.id) {
+            return "Independiente";
+          }
+
+          const padre = padresData?.data?.find((item) => item.id === value);
+
+          return padre ? padre.nombre : "No registrado";
         },
       },
       {
